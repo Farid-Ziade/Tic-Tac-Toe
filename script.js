@@ -1,84 +1,30 @@
-const rows = 3;
-const columns = 3;
-const winningConditions = [
-  [
-    [0, 0],
-    [0, 1],
-    [0, 2],
-  ],
-  [
-    [1, 0],
-    [1, 1],
-    [1, 2],
-  ],
-  [
-    [2, 0],
-    [2, 1],
-    [2, 2],
-  ],
-  [
-    [0, 0],
-    [1, 0],
-    [2, 0],
-  ],
-  [
-    [0, 1],
-    [1, 1],
-    [2, 1],
-  ],
-  [
-    [0, 2],
-    [1, 2],
-    [2, 2],
-  ],
-  [
-    [0, 0],
-    [1, 1],
-    [2, 2],
-  ],
-  [
-    [2, 0],
-    [1, 1],
-    [0, 2],
-  ],
-];
-
-let GameBoard = {
-  board: [],
-};
-
-let player = {
-  X: "X",
-  O: "O",
-};
-for (let i = 0; i < rows; i++) {
-  GameBoard.board[i] = [];
-  for (let j = 0; j < columns; j++) {
-    GameBoard.board[i][j] = "";
-  }
-}
-let count = 0;
-GameBoard.board[0][2] = "X";
-GameBoard.board[0][1] = "O";
-GameBoard.board[1][1] = "X";
-GameBoard.board[0][0] = "O";
-GameBoard.board[2][0] = "X";
-(function () {
-  console.log(GameBoard.board);
+"use strict";
+const gameBoard = (() => {
+  let board = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ];
+  const reset = () => {
+    board = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+  };
+  const placement = (row, column, marker) => {
+    if (board[row][column] !== "") return;
+    return (board[row][column] = marker);
+  };
+  return { reset, placement };
 })();
-for (let i = 0; i < winningConditions.length; i++) {
-  count = 0;
-  for (let j = 0; j < winningConditions[i].length; j++) {
-    if (
-      GameBoard.board[winningConditions[i][j][0]][
-        winningConditions[i][j][1]
-      ] === "X"
-    ) {
-      count++;
-    }
-    if (count === 3) {
-      console.log("X won");
-    }
-  }
-  console.log("break");
+
+function createPlayer(name, marker) {
+  return { name, marker };
 }
+
+function gameControler(gameBoard) {
+  const player1 = createPlayer("Player 1", "X");
+  const player2 = createPlayer("Player 2", "O");
+}
+console.log(gameControler(gameBoard));
