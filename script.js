@@ -15,7 +15,6 @@ let gameBoard = (() => {
   let placement = (row, column, marker) => {
     if (board[row][column] !== "") {
       console.log("Please choose another cell this one is taken");
-      return true;
     }
     console.log("ok");
     board[row][column] = marker;
@@ -82,18 +81,13 @@ function createPlayer(name, marker) {
 function gameControler() {
   const player1 = createPlayer("Player 1", "X");
   const player2 = createPlayer("Player 2", "O");
-  let gameOver = false;
+  let gameOver = true;
+  let last = player1.marker;
   while (gameOver) {
     let rows = Number(prompt("Please enter row "));
     let columns = Number(prompt("Please enter column "));
-    let last = player1.marker;
     gameBoard.placement(rows, columns, last);
-    while (gameBoard.placement(rows, columns, last)) {
-      rows = Number(prompt("Please enter row "));
-      columns = Number(prompt("Please enter column "));
-    }
-    gameBoard.winningCondition(rows, columns, last);
-    while (gameBoard.winningCondition(rows, columns, last)) {
+    if (gameBoard.winningCondition(rows, columns, last)) {
       gameOver = false;
     }
     last == "X" ? (last = player2.marker) : (last = player1.marker);
