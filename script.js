@@ -15,6 +15,7 @@ let gameBoard = (() => {
   let placement = (row, column, marker) => {
     if (board[row][column] !== "") {
       console.log("Please choose another cell this one is taken");
+      return true;
     }
     console.log("ok");
     board[row][column] = marker;
@@ -86,11 +87,19 @@ function gameControler() {
   while (gameOver) {
     let rows = Number(prompt("Please enter row "));
     let columns = Number(prompt("Please enter column "));
-    gameBoard.placement(rows, columns, last);
+    //bug in the placement to fix
+    if (gameBoard.placement(rows, columns, last)) {
+      rows = Number(prompt("Please enter row "));
+      columns = Number(prompt("Please enter column "));
+      gameBoard.placement(rows, columns, last);
+    } else {
+      last == "X" ? (last = player2.marker) : (last = player1.marker);
+    }
     if (gameBoard.winningCondition(rows, columns, last)) {
       gameOver = false;
+    } else {
+      last == "X" ? (last = player2.marker) : (last = player1.marker);
     }
-    last == "X" ? (last = player2.marker) : (last = player1.marker);
   }
 }
 gameControler();
