@@ -9,15 +9,28 @@ html {
 }
 body {
   height: 100%;
+  width: 100%;
+  background-color: #f3f2ed;
+  margin: 0 auto;
+}
+.container {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 80%;
   justify-content: space-between;
   align-items: center;
-  background-color: #f3f2ed;
+  margin: 0 auto;
+}
+.message {
+  height: auto;
 }
 
 .card-container {
   display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   gap: 50px;
 }
 .card-container .card {
@@ -39,11 +52,22 @@ body {
 .board button {
   width: 100px;
   height: 100px;
+  background-color: rgb(255, 255, 255);
 }
-.new-game {
-  height: 10%;
+.containers {
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.new-game,
+.reset {
+  height: 100%;
   width: 20%;
-  border-radius: 4%;
+  padding: 20px;
+  border-radius: 5%;
   background-color: black;
   color: white;
   cursor: pointer;

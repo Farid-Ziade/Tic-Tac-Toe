@@ -1,18 +1,10 @@
 "use strict";
-let mark;
 
-let button = document.querySelectorAll(".btn");
-button.forEach((btn, index) => {
-  btn.addEventListener("click", () => {
-    btn.innerHTML = mark;
-  });
-});
-let newgame = document.querySelector(".new-game");
-newgame.addEventListener("click", () => {
-  console.log("hi");
-});
-let message = document.querySelector(".message");
-
+let mark = "X";
+let place;
+let counter = 0;
+let gameOn;
+let h2 = document.createElement("h2");
 let gameBoard = (() => {
   let board = [
     ["", "", ""],
@@ -28,7 +20,8 @@ let gameBoard = (() => {
   };
   let placement = (row, column, marker) => {
     if (board[row][column] !== "") {
-      message.innerHTML = "Please choose another cell this one is taken";
+      h2.innerHTML = "Please choose another cell this one is taken";
+      message.appendChild(h2);
       return false;
     }
     board[row][column] = marker;
@@ -44,7 +37,11 @@ let gameBoard = (() => {
       win == board[row][2] &&
       board[row][2] == marker
     ) {
-      message.innerHTML = mark + "won by row";
+      h2.innerHTML = mark + " won by row";
+      message.appendChild(h2);
+      button.forEach((btn, row) => {
+        btn.setAttribute("background-color", "gold");
+      });
       return true;
     }
 
@@ -57,7 +54,9 @@ let gameBoard = (() => {
       win === board[2][column] &&
       board[2][column] == marker
     ) {
-      message.innerHTML = mark + "won by column";
+      h2.innerHTML = mark + " won by column";
+      message.appendChild(h2);
+
       return true;
     }
 
@@ -69,7 +68,8 @@ let gameBoard = (() => {
       win === board[2][0] &&
       board[2][0] == marker
     ) {
-      message.innerHTML = mark + "won by the other diagonal";
+      h2.innerHTML = mark + " won by the diagonal";
+      message.appendChild(h2);
 
       return true;
     }
@@ -82,7 +82,8 @@ let gameBoard = (() => {
       win === board[0][0] &&
       board[0][0] == marker
     ) {
-      message.innerHTML = mark + "won by the diagonal";
+      h2.innerHTML = mark + " won by the diagonal";
+      message.appendChild(h2);
 
       return true;
     }
@@ -97,23 +98,87 @@ function createPlayer(name, marker) {
 function gameControler() {
   const player1 = createPlayer("Player 1", "X");
   const player2 = createPlayer("Player 2", "O");
-  let gameOn = false;
-  let counter = 0;
-  let last = player1.marker;
-  while (gameOn) {
-    let rows = Number(prompt("Please enter row "));
-    let columns = Number(prompt("Please enter column "));
-    if (gameBoard.placement(rows, columns, last) == true) {
+  let rows, columns;
+  switch (place) {
+    case 0:
+      rows = 0;
+      columns = 0;
+      break;
+    case 1:
+      rows = 0;
+      columns = 1;
+      break;
+
+    case 2:
+      rows = 0;
+      columns = 2;
+      break;
+
+    case 3:
+      rows = 1;
+      columns = 0;
+      break;
+
+    case 4:
+      rows = 1;
+      columns = 1;
+      break;
+
+    case 5:
+      rows = 1;
+      columns = 2;
+      break;
+
+    case 6:
+      rows = 2;
+      columns = 0;
+      break;
+
+    case 7:
+      rows = 2;
+      columns = 1;
+      break;
+
+    case 8:
+      rows = 2;
+      columns = 2;
+      break;
+  }
+
+  if (gameOn) {
+    if (gameBoard.placement(rows, columns, mark) == true) {
       counter++;
-      if (gameBoard.winningCondition(rows, columns, last) == true) {
+      if (gameBoard.winningCondition(rows, columns, mark) == true) {
+        button.forEach((btn) => {
+          btn.disabled = true;
+        });
         gameOn = false;
       } else if (counter >= 9) {
-        message.innerHTML = "nobody won it's a tie ";
+        h2.innerHTML = "Nobody won it's a tie ";
+        message.appendChild(h2);
         gameOn = false;
+        button.forEach((btn) => {
+          btn.disabled = true;
+        });
       } else {
-        last == "X" ? (last = player2.marker) : (last = player1.marker);
+        mark == "X" ? (mark = player2.marker) : (mark = player1.marker);
       }
     }
   }
 }
-gameControler();
+
+let button = document.querySelectorAll(".btn");
+button.forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    btn.innerHTML = mark;
+    place = index;
+    btn.disabled = true;
+    if (counter < 9) {
+      gameOn = true;
+      gameControler();
+    }
+  });
+});
+let newgame = document.querySelector(".new-game");
+newgame.addEventListener("click", () => {});
+let message = document.querySelector(".message");
