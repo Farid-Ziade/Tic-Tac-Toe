@@ -1,11 +1,25 @@
 "use strict";
+let mark;
+
+let button = document.querySelectorAll(".btn");
+button.forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    btn.innerHTML = mark;
+  });
+});
+let newgame = document.querySelector(".new-game");
+newgame.addEventListener("click", () => {
+  console.log("hi");
+});
+let message = document.querySelector(".message");
+
 let gameBoard = (() => {
   let board = [
     ["", "", ""],
     ["", "", ""],
     ["", "", ""],
   ];
-  const reset = () => {
+  let reset = () => {
     board = [
       ["", "", ""],
       ["", "", ""],
@@ -14,11 +28,11 @@ let gameBoard = (() => {
   };
   let placement = (row, column, marker) => {
     if (board[row][column] !== "") {
-      console.log("Please choose another cell this one is taken");
+      message.innerHTML = "Please choose another cell this one is taken";
       return false;
     }
     board[row][column] = marker;
-    console.table(board);
+    mark = marker;
     return true;
   };
   let winningCondition = (row, column, marker) => {
@@ -30,7 +44,7 @@ let gameBoard = (() => {
       win == board[row][2] &&
       board[row][2] == marker
     ) {
-      console.log(`${marker} win by row`);
+      message.innerHTML = mark + "won by row";
       return true;
     }
 
@@ -43,7 +57,7 @@ let gameBoard = (() => {
       win === board[2][column] &&
       board[2][column] == marker
     ) {
-      console.log(`${marker} win by column`);
+      message.innerHTML = mark + "won by column";
       return true;
     }
 
@@ -55,7 +69,8 @@ let gameBoard = (() => {
       win === board[2][0] &&
       board[2][0] == marker
     ) {
-      console.log(`${marker} won by the other diagonal`);
+      message.innerHTML = mark + "won by the other diagonal";
+
       return true;
     }
 
@@ -67,7 +82,8 @@ let gameBoard = (() => {
       win === board[0][0] &&
       board[0][0] == marker
     ) {
-      console.log(`${marker} won by the diagonal`);
+      message.innerHTML = mark + "won by the diagonal";
+
       return true;
     }
   };
@@ -92,7 +108,7 @@ function gameControler() {
       if (gameBoard.winningCondition(rows, columns, last) == true) {
         gameOn = false;
       } else if (counter >= 9) {
-        console.log("Nobody won it's a tie");
+        message.innerHTML = "nobody won it's a tie ";
         gameOn = false;
       } else {
         last == "X" ? (last = player2.marker) : (last = player1.marker);
@@ -101,14 +117,3 @@ function gameControler() {
   }
 }
 gameControler();
-
-let button = document.querySelectorAll(".btn");
-button.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    console.log();
-  });
-});
-let newgame = document.querySelector(".new-game");
-newgame.addEventListener("click", () => {
-  console.log("hi");
-});
