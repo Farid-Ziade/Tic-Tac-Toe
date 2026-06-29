@@ -15,15 +15,14 @@ let gameBoard = (() => {
   let placement = (row, column, marker) => {
     if (board[row][column] !== "") {
       console.log("Please choose another cell this one is taken");
-      return true;
+      return false;
     }
-    console.log("ok");
     board[row][column] = marker;
     console.table(board);
+    return true;
   };
   let winningCondition = (row, column, marker) => {
     let win = board[row][0];
-    let gameOver;
     if (
       win !== "" &&
       win == board[row][1] &&
@@ -82,25 +81,34 @@ function createPlayer(name, marker) {
 function gameControler() {
   const player1 = createPlayer("Player 1", "X");
   const player2 = createPlayer("Player 2", "O");
-  let gameOver = true;
+  let gameOn = false;
+  let counter = 0;
   let last = player1.marker;
-  while (gameOver) {
+  while (gameOn) {
     let rows = Number(prompt("Please enter row "));
     let columns = Number(prompt("Please enter column "));
-    //bug in the placement to fix
-    if (gameBoard.placement(rows, columns, last)) {
-      rows = Number(prompt("Please enter row "));
-      columns = Number(prompt("Please enter column "));
-      gameBoard.placement(rows, columns, last);
-    } else {
-      last == "X" ? (last = player2.marker) : (last = player1.marker);
-    }
-    if (gameBoard.winningCondition(rows, columns, last)) {
-      gameOver = false;
-    } else {
-      last == "X" ? (last = player2.marker) : (last = player1.marker);
+    if (gameBoard.placement(rows, columns, last) == true) {
+      counter++;
+      if (gameBoard.winningCondition(rows, columns, last) == true) {
+        gameOn = false;
+      } else if (counter >= 9) {
+        console.log("Nobody won it's a tie");
+        gameOn = false;
+      } else {
+        last == "X" ? (last = player2.marker) : (last = player1.marker);
+      }
     }
   }
 }
 gameControler();
-// gameBoard.placement(0, 2, "X");
+
+let button = document.querySelectorAll(".btn");
+button.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    console.log();
+  });
+});
+let newgame = document.querySelector(".new-game");
+newgame.addEventListener("click", () => {
+  console.log("hi");
+});
