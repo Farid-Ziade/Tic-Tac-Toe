@@ -5,6 +5,8 @@ let place;
 let counter = 0;
 let gameOn;
 let h2 = document.createElement("h2");
+let rows, columns;
+
 let gameBoard = (() => {
   let board = [
     ["", "", ""],
@@ -19,11 +21,6 @@ let gameBoard = (() => {
     ];
   };
   let placement = (row, column, marker) => {
-    if (board[row][column] !== "") {
-      h2.innerHTML = "Please choose another cell this one is taken";
-      message.appendChild(h2);
-      return false;
-    }
     board[row][column] = marker;
     mark = marker;
     return true;
@@ -31,7 +28,8 @@ let gameBoard = (() => {
   let winningCondition = (row, column, marker) => {
     let win = board[row][0];
     if (
-      win !== "" &&
+      win &&
+      board[row][0] == marker &&
       win == board[row][1] &&
       board[row][1] == marker &&
       win == board[row][2] &&
@@ -39,8 +37,21 @@ let gameBoard = (() => {
     ) {
       h2.innerHTML = mark + " won by row";
       message.appendChild(h2);
-      button.forEach((btn, row) => {
-        btn.setAttribute("background-color", "gold");
+      button.forEach((btn, index) => {
+        if (btn.hasAttribute("disabled")) {
+          ///bug here in index it is checking if there is anything on the index and setting attribute
+          if (row == 0 && (index == 0 || index == 1 || index == 2)) {
+            btn.setAttribute("style", "background-color:gold");
+            console.log(index);
+          }
+          if (row == 1 && (index == 0 || index == 1 || index == 2)) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (row == 2 && (index == 0 || index == 1 || index == 2)) {
+            console.log("hi");
+            btn.setAttribute("style", "background-color:gold");
+          }
+        }
       });
       return true;
     }
@@ -54,6 +65,11 @@ let gameBoard = (() => {
       win === board[2][column] &&
       board[2][column] == marker
     ) {
+      button.forEach((btn, index) => {
+        if (btn.hasAttribute("disabled")) {
+          console.log(columns);
+        }
+      });
       h2.innerHTML = mark + " won by column";
       message.appendChild(h2);
 
@@ -98,7 +114,6 @@ function createPlayer(name, marker) {
 function gameControler() {
   const player1 = createPlayer("Player 1", "X");
   const player2 = createPlayer("Player 2", "O");
-  let rows, columns;
   switch (place) {
     case 0:
       rows = 0;
