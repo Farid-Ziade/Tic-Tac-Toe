@@ -4,7 +4,7 @@ let mark = "X";
 let place;
 let counter = 0;
 let gameOn;
-let h2 = document.createElement("h2");
+let h2 = document.querySelector(".h2");
 
 let gameBoard = (() => {
   let board = [
