@@ -5,7 +5,6 @@ let place;
 let counter = 0;
 let gameOn;
 let h2 = document.createElement("h2");
-let rows, columns;
 
 let gameBoard = (() => {
   let board = [
@@ -28,7 +27,6 @@ let gameBoard = (() => {
   let winningCondition = (row, column, marker) => {
     let win = board[row][0];
     if (
-      win &&
       board[row][0] == marker &&
       win == board[row][1] &&
       board[row][1] == marker &&
@@ -37,18 +35,15 @@ let gameBoard = (() => {
     ) {
       h2.innerHTML = mark + " won by row";
       message.appendChild(h2);
-      button.forEach((btn, index) => {
+      button.forEach((btn) => {
         if (btn.hasAttribute("disabled")) {
-          ///bug here in index it is checking if there is anything on the index and setting attribute
-          if (row == 0 && (index == 0 || index == 1 || index == 2)) {
-            btn.setAttribute("style", "background-color:gold");
-            console.log(index);
-          }
-          if (row == 1 && (index == 0 || index == 1 || index == 2)) {
+          if (row == 0 && btn.innerHTML === mark) {
             btn.setAttribute("style", "background-color:gold");
           }
-          if (row == 2 && (index == 0 || index == 1 || index == 2)) {
-            console.log("hi");
+          if (row == 1 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (row == 2 && btn.innerHTML === mark) {
             btn.setAttribute("style", "background-color:gold");
           }
         }
@@ -65,9 +60,17 @@ let gameBoard = (() => {
       win === board[2][column] &&
       board[2][column] == marker
     ) {
-      button.forEach((btn, index) => {
+      button.forEach((btn) => {
         if (btn.hasAttribute("disabled")) {
-          console.log(columns);
+          if (column == 0 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (column == 1 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (column == 2 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
         }
       });
       h2.innerHTML = mark + " won by column";
@@ -84,6 +87,19 @@ let gameBoard = (() => {
       win === board[2][0] &&
       board[2][0] == marker
     ) {
+      button.forEach((btn) => {
+        if (btn.hasAttribute("Disabled")) {
+          if (row == 0 && column == 2 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (row == 1 && column == 1 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (row == 2 && column == 0 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+        }
+      });
       h2.innerHTML = mark + " won by the diagonal";
       message.appendChild(h2);
 
@@ -98,6 +114,19 @@ let gameBoard = (() => {
       win === board[0][0] &&
       board[0][0] == marker
     ) {
+      button.forEach((btn) => {
+        if (btn.hasAttribute("Disabled")) {
+          if (row == 2 && column == 2 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (row == 1 && column == 1 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+          if (row == 0 && column == 0 && btn.innerHTML === mark) {
+            btn.setAttribute("style", "background-color:gold");
+          }
+        }
+      });
       h2.innerHTML = mark + " won by the diagonal";
       message.appendChild(h2);
 
@@ -114,6 +143,7 @@ function createPlayer(name, marker) {
 function gameControler() {
   const player1 = createPlayer("Player 1", "X");
   const player2 = createPlayer("Player 2", "O");
+  let rows, columns;
   switch (place) {
     case 0:
       rows = 0;
